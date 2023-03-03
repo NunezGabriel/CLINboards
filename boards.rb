@@ -2,16 +2,20 @@
 require_relative "list"
 require "json"
 
+
 class Board
 
     @@id_value = 0
-    def initialize(data, list)
-        @data = data
-        @list_B = list
-        @id_key = :id
+    def initialize(id:,name:,description:,lists: nil)
+        @id = id
+        @name = name
+        @description = description
+        @lists = lists
+       # @list_B = list
+       # @id_key = :id
     end
-
-    def create_board(name_b, description_b, list_b, b_name_value = "unknow", b_description_value = "unknow" )
+    { name: name, description: description }
+    def create_board(name:, description:, lists: nil)
         @@id_value += 1
         arr_c = {}
 
@@ -47,34 +51,21 @@ class Board
         lista.list
     end
 
+    def load
+        @list.map { |list| List.new(**list)}
+      end
+  
+    
+    def boards_table_row
+
+        lists = []
+
+        @lists.each do |hash|
+        lists << "#{hash[:name]}(#{hash[:cards].size})"
+        end
+
+        listas = lists.join(", ")
+        
+        [@id, @name, @description,listas]
+    end
 end
-
-data_prub = [ 
-    { 
-        id: 1,
-        name: "Extended - CLIn Boards",
-        description: "Task management for the last extended",
-        lists: [
-            {
-                id: 1,
-                name: "alberto",
-                cards: []
-            }
-        ]
-    }
-]
-# ============================= PRUEBAS =================================
-# lista = List.new
-# lista_br = lista.create_list("casa")
-
-# board = Board.new(data_prub, lista_br)
-# board.create_board(:name, :description, :list)
-# board.create_board(:name, :description, :list)
-# board.create_board(:name, :description, :list)
-# puts data_prub
-# p "==============================="
-# board.delete_board(2)
-# puts data_prub
-# p "==============================="
-# board.update_board(1,"juan","esta es otra descripcion")
-# puts data_prub

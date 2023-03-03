@@ -1,17 +1,19 @@
 require_relative "boards"
-require_relative "lists"
+require_relative "list"
 require_relative "cards"
+require "terminal-table"
 
 class ClinBoards
-  def initialize(filenae)
-    @boards = Boards.new(filename)
+  def initialize(filename)
+    @filename = filename
+    @boards = load
   end
 
   def start
     
     loop do
       puts welcome()
-      puts @boards.boards_table
+      puts boards_table
       puts boards_menu()
       puts "exit"
       print "> "
@@ -38,13 +40,26 @@ class ClinBoards
 
   private
 
+  def boards_table
+    table = Terminal::Table.new
+    table.title = "CLIn Boards"
+    table.headings = ["ID", "Name", "Description", "List(#cards)"]
+    table.rows = @boards.map(&:boards_table_row)
+    table
+  end
+
+  def load
+    board_data = JSON.parse(File.read(@filename), symbolize_names: true )
+    board_data.map { |list| Board.new(**list)}
+  end
+
   def welcome
     puts "####################################"
     puts "#      Welcome to CLIn Boards      #"
     puts "####################################"
   end
 
-  def board_menu
+  def boards_menu
     "create | show ID | update ID | delete ID "
   end
 
@@ -137,7 +152,8 @@ class ClinBoards
       print "> "
       
       option, ind = gets.chomp
-
+      loop do
+        
       case option 
       when "add"
         print "Title: "
@@ -151,14 +167,11 @@ class ClinBoards
         break
       end
 
-    
+      end
+
     end
   
-  
-  
   end
-
-
 
 end
 

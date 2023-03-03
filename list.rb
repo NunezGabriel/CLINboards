@@ -6,18 +6,20 @@ class List
 
   @@id = nil
 
-  def initialize()
-    @list = []
+  def initialize(id:, name:, card: nil)
+    @id = id
+    @name = name
+    @cards = card || []
   end
 
 
   def create_list(value)
     hash = {id: next_id, name:value, cards: []}
-    @list << hash
+    @cards << hash
   end
 
   def update_list(name, new_name)
-    @list.find do |hash|
+    @cards.find do |hash|
       if hash[:name] == name
         hash[:name] = new_name
       end
@@ -25,12 +27,12 @@ class List
   end
 
   def delete_list(value)
-    @list.delete_if{|hash| hash[:name] == value}
+    @cards.delete_if{|hash| hash[:name] == value}
   end
 
   def create_card(name_list = "todo", value)
     newcard = Cards.new(**value)
-    @list.find do |hash|
+    @cards.find do |hash|
       if hash[:name] == name_list
         hash[:cards] << newcard
       end
@@ -38,7 +40,7 @@ class List
   end
 
   def update_cards(id,name_list,value)
-    cards = @list.find { |hash| hash[:cards].find {|card| card.id == id }}
+    cards = @cards.find { |hash| hash[:cards].find {|card| card.id == id }}
 
     cards[:cards].each do |card|
       if card.id == id
@@ -46,11 +48,11 @@ class List
       end
     end
 
-    new_card = @list.find { |hash| hash[:cards].find {|card| card.id == id }}
+    new_card = @cards.find { |hash| hash[:cards].find {|card| card.id == id }}
 
-    @list.each do |hash|
+    @cards.each do |hash|
       if hash[:name] != name_list
-        new_hash = @list.find { |hash| hash[:name] == name_list }
+        new_hash = @cards.find { |hash| hash[:name] == name_list }
         new_hash[:cards].concat(new_card[:cards])
         break
       end
@@ -60,18 +62,18 @@ class List
   end
 
   def delete_card(id)
-    cards = @list.find { |hash| hash[:cards].find {|card| card.id == id }}
+    cards = @cards.find { |hash| hash[:cards].find {|card| card.id == id }}
     cards[:cards].delete_if { |card| card.id == id }
   end
 
   private
 
-  # def load
-  #   playlists_data = JSON.parse(File.read("card.json"), symbolize_names: true )
-  # end
+  def load
+    @cards.map { |card| Cards.new(**card)}
+  end
 
   def next_id
-    @@id = @list.size + 1
+    @@id = @cards.size + 1
   end
 
 end
