@@ -47,9 +47,6 @@ class Board
         lista.list
     end
 
-    def data_prub
-
-    end
 end
 
 data_prub = [ 
