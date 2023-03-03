@@ -9,7 +9,7 @@ class List
 
   def create_list(value)
     hash = {}
-    hash[:value] = {}
+    hash[value] = {}
     @list << hash
   end
 
@@ -18,6 +18,7 @@ class List
   def update_list(value)
     list = @list.map do |name|
               if name.keys.include?(:value)
+              end
             end
     list[0].transform_keys! { |key| key == "value" ? "newvalue" : key }
   end
@@ -42,10 +43,6 @@ class List
     @list.delete_if{|card| card.id == id}
   end
 
-  def show
-    @list
-  end
-
   private
 
   def load
@@ -64,4 +61,4 @@ lista = List.new()
 
 
 lista.create_list(:casa)
-pp lista.show
+# p lista.list
