@@ -9,7 +9,7 @@ class List
 
   def create_list(value)
     hash = {}
-    hash[:value] = {}
+    hash[value] = {}
     @list << hash
   end
 
@@ -61,4 +61,4 @@ lista = List.new()
 
 
 lista.create_list(:casa)
-p lista.list
+# p lista.list
