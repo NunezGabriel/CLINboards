@@ -130,7 +130,7 @@ class ClinBoards
   
   
     def checklist(checklist_id)
-      @card.checklist
+      @card.checklist_card
       puts "-------------------------------------"
       puts "Checklist options: add | toggle INDEX | delete INDEX"
       puts "back"
