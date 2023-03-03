@@ -125,10 +125,17 @@ class ClinBoards
       { name: name, value: value }
     end
     
-    
+    def list_options
+      option = []
+        @lists.each do |hash|
+        option << "#{hash[:name]})"
+        end
+        options = option.join(" | ")
+    end
+
     def card_form
       print "Select a list:"
-      print "Todo | In Progress | Code Review | Done"
+      puts "Todo | In Progress | Code Review | Done"
       print "> "
       
       print "Title: "
