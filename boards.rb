@@ -29,7 +29,7 @@ class Board
         @data << arr_c
     end
 
-    def update_board(id, new_name_b, new_description_b )
+    def update_board(id, new_name_b , new_description_b )
         @data[id-1][:name] = new_name_b
         @data[id-1][:description] = new_description_b
     end
@@ -53,31 +53,31 @@ class Board
 end
 
 data_prub = [ 
-    # { 
-    #     id: 1,
-    #     name: "Extended - CLIn Boards",
-    #     description: "Task management for the last extended",
-    #     lists: [
-    #         {
-    #             title: "pepe",
-    #             members: ["Diego", "Deyvi", "Wences"],
-    #             labels: ["investigate"],
-    #             due_date: "2023-02-19",
-    #         }
-    #     ]
-    # }
+    { 
+        id: 1,
+        name: "Extended - CLIn Boards",
+        description: "Task management for the last extended",
+        lists: [
+            {
+                id: 1,
+                name: "alberto",
+                cards: []
+            }
+        ]
+    }
 ]
-lista = List.new
-listab = lista.create_list(:casa)
+# ============================= PRUEBAS =================================
+# lista = List.new
+# lista_br = lista.create_list("casa")
 
-board = Board.new(data_prub, listab)
-board.create_board(:name, :description, :list)
-board.create_board(:name, :description, :list)
-board.create_board(:name, :description, :list)
-puts data_prub
-p "==============================="
-board.delete_board(2)
-puts data_prub
-p "==============================="
-board.update_board(1,"juan","esta es otra descripcion")
-puts data_prub
+# board = Board.new(data_prub, lista_br)
+# board.create_board(:name, :description, :list)
+# board.create_board(:name, :description, :list)
+# board.create_board(:name, :description, :list)
+# puts data_prub
+# p "==============================="
+# board.delete_board(2)
+# puts data_prub
+# p "==============================="
+# board.update_board(1,"juan","esta es otra descripcion")
+# puts data_prub
