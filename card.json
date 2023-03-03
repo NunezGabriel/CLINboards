@@ -1,0 +1,21 @@
+{
+            "id": 1,
+            "title": "Check terminal-table gem",
+            "members": ["Diego", "Deyvi", "Wences"],
+            "labels": ["investigate"],
+            "due_date": "2023-02-19",
+            "checklist": [
+              {
+                "title": "Add gem to gemfile",
+                "completed": true
+              },
+              {
+                "title": "Make an example and share with the team",
+                "completed": false
+              },
+              {
+                "title": "Ask if this feature is mandatory",
+                "completed": true
+              }
+            ] 
+         }

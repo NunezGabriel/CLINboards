@@ -9,5 +9,3 @@ class ClinBoards
 end
 
 # get the command-line arguments if neccesary
-app = ClinBoards.new
-app.start
