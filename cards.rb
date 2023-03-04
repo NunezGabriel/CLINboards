@@ -57,14 +57,14 @@ class Cards
     [@id, @title, @members.join(", "),@labels.join(", "), @due_date,"#{lists.size}/#{@checklist.size}"]
   end
   def to_json(arg)
-    {
+    JSON.pretty_generate({
       id: @id,
       title: @title, 
       members: @members, 
       labels:@labels, 
       due_date: @due_date, 
       checklist: @checklist 
-    }.to_json
+    })
   end
   
   def next_id(id)

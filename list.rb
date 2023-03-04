@@ -40,11 +40,11 @@ class List
 
 
   def to_json(arg)
-    {
+    JSON.pretty_generate({
       id: @id,
       name: @name, 
       cards: @cards, 
-    }.to_json
+    })
   end
 
   private

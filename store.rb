@@ -115,6 +115,6 @@ class Store
 
           
   def save
-    File.write(@filename, @boards.to_json)
+    File.write(@filename, JSON.pretty_generate(@boards))
   end
 end
