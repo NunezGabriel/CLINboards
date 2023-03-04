@@ -53,5 +53,15 @@ class Cards
     lists
 
     [@id, @title, @members,@labels, @due_date,"#{list.size}/#{@checklist.size}"]
-end
+  end
+  def to_json(arg)
+    {
+      id: @title,
+      title: @title, 
+      members: @members, 
+      labels:@labels, 
+      due_date: @due_date, 
+      checklist: @checklist 
+    }.to_json
+  end
 end

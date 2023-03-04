@@ -15,15 +15,18 @@ class Store
 
   def create_board(data)
     @boards << Board.new(**data)
+    save
   end
 
   def delete_board(id)
     @boards.delete_if { |board| board.id == id }
+    save
   end
 
   def update_board(id, data)
     board = find_board(id)
     board.update_board(**data)
+    save
   end
 
   def boards_table

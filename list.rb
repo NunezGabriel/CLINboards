@@ -78,5 +78,13 @@ class List
     @@id = @cards.size + 1
   end
 
+  def to_json(arg)
+    {
+      id: @title,
+      name: @name, 
+      cards: @cards, 
+    }.to_json
+  end
+
 end
 

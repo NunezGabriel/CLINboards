@@ -64,4 +64,12 @@ class Board
         [@id, @name, @description,listas]
     end
 
+    def to_json(arg)
+        {
+          id: @title,
+          name: @name, 
+          description: @description, 
+          list: @list, 
+        }.to_json
+    end
 end
