@@ -35,6 +35,10 @@ class ClinBoards
       when "exit"
         puts "Goodbye!"
         break
+      else
+        puts "=========================="
+        puts "INVALID OPTION"
+        puts "=========================="
       end
     end
   end
@@ -86,7 +90,7 @@ class ClinBoards
         @store.create_card(board_id, name_list,data)
         dislplay_lists_menus()
       when "checklist"
-        puts ckeck_list(id)
+        ckeck_list(board_id,id.to_i)
       when "update-card"
         name_list = card_list_form
         data = card_form
@@ -97,10 +101,15 @@ class ClinBoards
         dislplay_lists_menus()
       when "back"
         break
+      else
+        puts "=========================="
+        puts "INVALID OPTION"
+        puts "=========================="
+        dislplay_lists_menus()
       end
+
     end
 
-    
     def list_options
       option = []
         @lists.each do |hash|
@@ -109,34 +118,54 @@ class ClinBoards
         options = option.join(" | ")
     end
   
-  
-    def checklist(checklist_id)
-      @card.checklist_card
-      puts "-------------------------------------"
-      puts "Checklist options: add | toggle INDEX | delete INDEX"
-      puts "back"
-      print "> "
+  end
+
+  def ckeck_list(board_id,card_id)
+    @store.checklist_card(board_id,card_id)
+    dislplay_lists_menus_checklist
+    
+    option, index = gets.chomp.split
+
+    loop do
       
-      option, ind = gets.chomp
-      loop do
-        
-      case option 
-      when "add"
-        print "Title: "
-        title = gets.chomp
-        @card.add_checklist(title)
-      when "toggle"
-        @card.toggle_checklist(ind)
-      when "delete"
-        @card.delete_checklist(id)
-      when "back"
-        break
-      end
-
-      end
-
+    case option 
+    when "add"
+      data = add_title
+      @store.add_checklist(board_id,card_id,data)
+      @store.checklist_card(board_id,card_id)
+      dislplay_lists_menus_checklist
+    when "toggle"
+      @store.toggle_checklist(board_id,card_id,index.to_i)
+      @store.checklist_card(board_id,card_id)
+      dislplay_lists_menus_checklist
+    when "delete"
+      @store.delete_checklist(board_id,card_id,index.to_i)
+      @store.checklist_card(board_id,card_id)
+      dislplay_lists_menus_checklist
+    when "back"
+      break
+    else 
+      puts "=========================="
+      puts "INVALID OPTION"
+      puts "=========================="
+      @store.checklist_card(board_id,card_id)
+      dislplay_lists_menus_checklist
     end
-  
+    option, id = gets.chomp.split
+    end
+ 
+  end
+
+  def add_title
+    print "Title: "
+    title = gets.chomp
+  end
+
+  def dislplay_lists_menus_checklist
+    puts "-------------------------------------"
+    puts "Checklist options: add | toggle INDEX | delete INDEX"
+    puts "back"
+    print "> "
   end
 
   def dislplay_lists_menus

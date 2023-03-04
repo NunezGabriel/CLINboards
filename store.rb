@@ -65,6 +65,28 @@ class Store
     #save
   end
 
+  def checklist_card(board_id,card_id)
+    board = find_board(board_id)
+    board.checklist_card(card_id)
+    #save
+  end
+
+  def add_checklist(board_id,card_id,title)
+    board = find_board(board_id)
+    board.add_checklists(card_id,title)
+    #save
+  end
+
+  def toggle_checklist(board_id,card_id,index)
+    board = find_board(board_id)
+    board.toggle_checklists(card_id,index)
+  end
+
+  def delete_checklist(board_id,card_id,index)
+    board = find_board(board_id)
+    board.delete_checklists(card_id,index)
+  end
+
   def boards_table
     table = Terminal::Table.new
     table.title = "CLIn Boards"

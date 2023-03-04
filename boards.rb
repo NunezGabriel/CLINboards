@@ -61,6 +61,30 @@ class Board
         delete_data.cards.delete_if{|card| card.id == id}
     end
 
+    def checklist_card(id)
+        lista = @lists.find{ |list| list.cards.find { |card| card.id == id }}
+        card = lista.cards.find {|card| card.id == id}
+        card.checklist_card
+    end
+
+    def add_checklists(id,title)
+        lista = @lists.find{ |list| list.cards.find { |card| card.id == id }}
+        card = lista.cards.find {|card| card.id == id}
+        card.add_checklist(title)
+    end
+
+    def toggle_checklists(id,index)
+        lista = @lists.find{ |list| list.cards.find { |card| card.id == id }}
+        card = lista.cards.find {|card| card.id == id}
+        card.toggle_checklist(index)
+    end
+
+    def delete_checklists(id,index)
+        lista = @lists.find{ |list| list.cards.find { |card| card.id == id }}
+        card = lista.cards.find {|card| card.id == id}
+        card.delete_checklist(index)
+    end
+
     def delete_lists(name)
         @lists.delete_if { |hash| hash.name == name}
     end
