@@ -58,7 +58,7 @@ class Cards
   end
   def to_json(arg)
     {
-      id: @title,
+      id: @id,
       title: @title, 
       members: @members, 
       labels:@labels, 

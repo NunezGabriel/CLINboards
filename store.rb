@@ -15,76 +15,78 @@ class Store
 
   def create_board(data)
     @boards << Board.new(**data)
-    #save
+    save
   end
 
   def create_list(id,data)
     board = find_board(id)
     board.create_lists(data)
-    #save
+    save
   end
 
   def delete_board(id)
     @boards.delete_if { |board| board.id == id }
-    #save
+    save
   end
 
   def update_board(id, data)
     board = find_board(id)
     board.update_board(**data)
-    #save
+    save
   end
 
   def update_list(id,name,data)
     board = find_board(id)
     board.update_lists(name,data)
-    #save
+    save
   end
 
   def delete_list(id,name)
     board = find_board(id)
     board.delete_lists(name)
-    #save
+    save
   end
 
   def create_card(id, name_list,data)
     board = find_board(id)
     board.create_cards(name_list,data)
-    #save
+    save
   end
 
   def update_card(board_id,id,name_list,data)
     board = find_board(board_id)
     board.update_cards(id.to_i,name_list,data)
-    #save
+    save
   end
 
   def delete_card(board_id,id)
     board = find_board(board_id)
     board.delete_cards(id)
-    #save
+    save
   end
 
   def checklist_card(board_id,card_id)
     board = find_board(board_id)
     board.checklist_card(card_id)
-    #save
+    save
   end
 
   def add_checklist(board_id,card_id,title)
     board = find_board(board_id)
     board.add_checklists(card_id,title)
-    #save
+    save
   end
 
   def toggle_checklist(board_id,card_id,index)
     board = find_board(board_id)
     board.toggle_checklists(card_id,index)
+    save
   end
 
   def delete_checklist(board_id,card_id,index)
     board = find_board(board_id)
     board.delete_checklists(card_id,index)
+    save
   end
 
   def boards_table
@@ -113,6 +115,6 @@ class Store
 
           
   def save
-    File.write(@filename, JSON.pretty_generate(@boards))
+    File.write(@filename, @boards.to_json)
   end
 end

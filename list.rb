@@ -39,6 +39,14 @@ class List
   end
 
 
+  def to_json(arg)
+    {
+      id: @id,
+      name: @name, 
+      cards: @cards, 
+    }.to_json
+  end
+
   private
   
 
@@ -48,14 +56,6 @@ class List
 
   def next_id
     @@id = @cards.size + 1
-  end
-
-  def to_json(arg)
-    {
-      id: @title,
-      name: @name, 
-      cards: @cards, 
-    }.to_json
   end
 
 end

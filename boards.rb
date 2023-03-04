@@ -139,10 +139,10 @@ class Board
 
     def to_json(arg)
         {
-          id: @title,
+          id: @id,
           name: @name, 
           description: @description, 
-          list: @list, 
+          list: @lists, 
         }.to_json
     end
 end
