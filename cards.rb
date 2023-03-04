@@ -1,8 +1,10 @@
 class Cards
   attr_reader :id
+  attr_accessor :title, :members, :labels, :due_date
+  @@id_count = 0
 
-  def initialize(title:, members:, labels:, due_date:, id: nil, checklist: nil)
-    @id = id
+  def initialize(title:, members:, labels: nil, due_date:, id: nil, checklist: [])
+    @id =  next_id(id)
     @title = title
     @members = members
     @labels = labels
@@ -46,13 +48,13 @@ class Cards
 
     @checklist.each do |checklist|
       if checklist[:completed]
-        lists < checklist
+        lists << checklist
       end
     end
 
     lists
 
-    [@id, @title, @members,@labels, @due_date,"#{list.size}/#{@checklist.size}"]
+    [@id, @title, @members.join(", "),@labels.join(", "), @due_date,"#{lists.size}/#{@checklist.size}"]
   end
   def to_json(arg)
     {
@@ -63,5 +65,16 @@ class Cards
       due_date: @due_date, 
       checklist: @checklist 
     }.to_json
+  end
+  
+  def next_id(id)
+    if id
+      @@id_count = [@@id_count, id].max
+      return id
+    else
+      @@id_count += 1
+    end
+
+    @@id_count
   end
 end

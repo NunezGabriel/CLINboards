@@ -2,63 +2,35 @@ require_relative "cards"
 require "json"
 
 class List
-  attr_reader :list, :name, :cards
+  attr_reader :list, :cards, :id
+  attr_accessor :name
 
   @@id = nil
 
-  def initialize(id:, name:, cards: nil)
+  def initialize(id:nil, name:, cards: [])
     @id = id
     @name = name
-    @cards = cards || []
+    @cards = load(cards) || []
   end
 
 
-  def create_list(value)
-    hash = {id: next_id, name:value, cards: []}
-    @cards << hash
-  end
-
-  def update_list(name, new_name)
-    @cards.find do |hash|
-      if hash[:name] == name
-        hash[:name] = new_name
-      end
-    end
-  end
 
   def delete_list(value)
     @cards.delete_if{|hash| hash[:name] == value}
   end
 
-  def create_card(name_list = "todo", value)
-    newcard = Cards.new(**value)
-    @cards.find do |hash|
-      if hash[:name] == name_list
-        hash[:cards] << newcard
-      end
-    end
+  def create_new_card(name_list = "todo", data)
+    newcard = Cards.new(**data)
+    @cards << newcard
   end
 
-  def update_cards(id,name_list,value)
-    cards = @cards.find { |hash| hash[:cards].find {|card| card.id == id }}
-
-    cards[:cards].each do |card|
+  def update_actual_card(id,name_list,data)
+    @cards.each do |card|
       if card.id == id
-       card.update_card(**value)
+       card.update_card(**data)
       end
     end
-
-    new_card = @cards.find { |hash| hash[:cards].find {|card| card.id == id }}
-
-    @cards.each do |hash|
-      if hash[:name] != name_list
-        new_hash = @cards.find { |hash| hash[:name] == name_list }
-        new_hash[:cards].concat(new_card[:cards])
-        break
-      end
-    end
-
-    cards[:cards].delete_if { |card| card.id == id }
+    @cards
   end
 
   def delete_card(id)
@@ -70,8 +42,8 @@ class List
   private
   
 
-  def load
-    @cards.map { |card| Cards.new(**card)}
+  def load(cards)
+    cards.map { |card| Cards.new(**card)}
   end
 
   def next_id

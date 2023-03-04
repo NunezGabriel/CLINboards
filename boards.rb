@@ -16,6 +16,55 @@ class Board
        # @id_key = :id
     end
 
+    def create_lists(data)
+        @lists << List.new(**data)
+    end
+
+        
+    def update_lists(name, data)
+        @lists.find do |hash|
+        if hash.name == name
+            hash.name = data[:name]
+        end
+        end
+    end
+
+    def create_cards(name_list,data)
+        lista = @lists.find { |list| list.name == name_list }
+        lista.create_new_card(name_list,data)
+    end
+
+    def update_cards(id,name_list,data)
+        card = @lists.find{ |list| list.cards.find { |card| card.id == id }}
+        card_update = card.update_actual_card(id,name_list,data)
+
+        @lists.each do |lista|
+            if lista.name != name_list
+              new_lista = @lists.find { |lista| lista.name == name_list }
+              new_lista.cards.concat(card_update)
+              break
+            end
+        end
+      
+        delete_data = @lists.find do |list| 
+            list.cards.find { |card| card.id == id } && list.name != name_list
+        end
+
+        delete_data.cards.delete_if{|card| card.id == id}
+
+    end
+
+    def delete_cards(id)
+        delete_data = @lists.find do |list| 
+            list.cards.find { |card| card.id == id }
+        end
+        delete_data.cards.delete_if{|card| card.id == id}
+    end
+
+    def delete_lists(name)
+        @lists.delete_if { |hash| hash.name == name}
+    end
+
 
     def next_id(id)
         if id

@@ -63,58 +63,43 @@ class ClinBoards
 
   def show_boards(board_id)
     loop do
-      puts @store.list_table(board_id)
+      @store.list_table(board_id)
       dislplay_lists_menus()
-      print "> "
 
       option , id = gets.chomp.split
 
       case option 
-      when "create_list"
-        puts list_form()
-        @list.create_list(name)
+      when "create-list"
+        data = list_form
+        @store.create_list(board_id,data)
         dislplay_lists_menus()
       when "update-list"
-        puts list_form()
-        @list.update_list(value)
+        data = list_form
+        @store.update_list(board_id,id,data)
         dislplay_lists_menus()
       when "delete-list"
-        puts list_form()
-        @list.delete_list(name)
+        @store.delete_list(board_id,id)
         dislplay_lists_menus()
       when "create-card"
-        puts card_form()
-        @list.create_card(value, list_id)
+        name_list = card_list_form
+        data = card_form
+        @store.create_card(board_id, name_list,data)
         dislplay_lists_menus()
       when "checklist"
         puts ckeck_list(id)
       when "update-card"
-        puts card_form()
-        @list.update(id, value, list_id)
+        name_list = card_list_form
+        data = card_form
+        @store.update_card(board_id,id.to_i,name_list,data)
         dislplay_lists_menus()
       when "delete-card"
-        @list.delete(id)
+        @store.delete_card(board_id,id.to_i)
         dislplay_lists_menus()
       when "back"
         break
       end
     end
 
-    def dislplay_lists_menus
-      puts @boards.lists_table
-      puts lists_menu()
-      puts cards_menu()
-      puts "back"
-      print "> "
-    end
-
-
-    def list_form
-      print "Name: "
-      name, value = gets.chomp.split
-
-      { name: name, value: value }
-    end
     
     def list_options
       option = []
@@ -122,23 +107,6 @@ class ClinBoards
         option << "#{hash[:name]})"
         end
         options = option.join(" | ")
-    end
-
-    def card_form
-      print "Select a list:"
-      puts "Todo | In Progress | Code Review | Done"
-      print "> "
-      
-      print "Title: "
-      title = gets.chomp
-      print "Members: "
-      members = gets.chomp
-      print "Labels: "
-      labels = gets.chomp
-      print "Due Date: "
-      due_date = gets.chomp
-
-      { title: title, members: members, lables: labels, due_date: due_date }
     end
   
   
@@ -169,6 +137,40 @@ class ClinBoards
 
     end
   
+  end
+
+  def dislplay_lists_menus
+    puts "List options: create-list | update-list LISTNAME | delete-list LISTNAME"
+    puts "Card options: create-card | checklist ID | update-card ID | delete-card ID"
+    puts "back"
+    print "> "
+  end
+
+  def list_form
+    print "Name: "
+    name= gets.chomp
+
+    { name: name }
+  end
+
+  def card_list_form
+    print "Select a list:"
+    puts " Todo | In Progress | Code Review | Done"
+    print "> "
+    list = gets.chomp
+  end
+
+  def card_form
+    print "Title: "
+    title = gets.chomp
+    print "Members: "
+    members = gets.chomp.split(",")
+    print "Labels: "
+    labels = gets.chomp.split(",")
+    print "Due Date: "
+    due_date = gets.chomp
+
+    { title: title, members: members, labels: labels, due_date: due_date }
   end
 
 end

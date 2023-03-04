@@ -15,18 +15,54 @@ class Store
 
   def create_board(data)
     @boards << Board.new(**data)
-    save
+    #save
+  end
+
+  def create_list(id,data)
+    board = find_board(id)
+    board.create_lists(data)
+    #save
   end
 
   def delete_board(id)
     @boards.delete_if { |board| board.id == id }
-    save
+    #save
   end
 
   def update_board(id, data)
     board = find_board(id)
     board.update_board(**data)
-    save
+    #save
+  end
+
+  def update_list(id,name,data)
+    board = find_board(id)
+    board.update_lists(name,data)
+    #save
+  end
+
+  def delete_list(id,name)
+    board = find_board(id)
+    board.delete_lists(name)
+    #save
+  end
+
+  def create_card(id, name_list,data)
+    board = find_board(id)
+    board.create_cards(name_list,data)
+    #save
+  end
+
+  def update_card(board_id,id,name_list,data)
+    board = find_board(board_id)
+    board.update_cards(id.to_i,name_list,data)
+    #save
+  end
+
+  def delete_card(board_id,id)
+    board = find_board(board_id)
+    board.delete_cards(id)
+    #save
   end
 
   def boards_table
@@ -39,14 +75,13 @@ class Store
 
   def list_table(id)
     board = find_board(id)
-    lista = board.lists
-    table = Terminal::Table.new
-    table.title = lista.name
-    table.headings = ["ID", "Title", "Members", "Labels", "Due Date", "Checklist"]
-    array = lista.cards
-    table.rows = array.map(&:cards_table_row)
-
-    table
+    board.lists.each do |lista|
+      table = Terminal::Table.new
+      table.title = lista.name
+      table.headings = ["ID", "Title", "Members", "Labels", "Due Date", "Checklist"]
+      table.rows = lista.cards.map(&:cards_table_row)
+      puts table
+    end
   end
         
   def load
