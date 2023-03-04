@@ -1,41 +1,36 @@
-# require "cards"
+require_relative "clin_boards"
 require_relative "list"
 require "json"
 
 
 class Board
+    attr_reader :id, :lists, :name
 
-    @@id_value = 0
-    def initialize(id:,name:,description:,lists: nil)
-        @id = id
+    @@id_count = 0
+    def initialize(id:nil,name:,description:, lists: [])
+        @id = next_id(id)
         @name = name
         @description = description
-        @lists = lists
+        @lists = load(lists)
        # @list_B = list
        # @id_key = :id
     end
-    { name: name, description: description }
-    def create_board(name:, description:, lists: nil)
-        @@id_value += 1
-        arr_c = {}
 
-        arr_c[@id_key] = {}
-        arr_c[@id_key] = @@id_value
 
-        arr_c[name_b] = {}
-        arr_c[name_b] = b_name_value
+    def next_id(id)
+        if id
+        @@id_count = [@@id_count, id].max
+        return id
+        else
+        @@id_count += 1
+        end
 
-        arr_c[description_b] = {}
-        arr_c[description_b] = b_description_value
-
-        arr_c[list_b] = {}
-        arr_c[list_b] = @list_B
-        @data << arr_c
+        @@id_count
     end
 
-    def update_board(id, new_name_b , new_description_b )
-        @data[id-1][:name] = new_name_b
-        @data[id-1][:description] = new_description_b
+    def update_board(name: , description: )
+        @name = name if name && !name.empty?
+        @description = description if description && !description.empty?
     end
 
     def delete_board(id)
@@ -51,21 +46,22 @@ class Board
         lista.list
     end
 
-    def load
-        @list.map { |list| List.new(**list)}
-      end
-  
-    
+    def load(lists)
+        lists.map { |list| List.new(**list)}
+    end
+
+
     def boards_table_row
 
         lists = []
 
         @lists.each do |hash|
-        lists << "#{hash[:name]}(#{hash[:cards].size})"
+        lists << "#{hash.name}(#{hash.cards.size})"
         end
 
         listas = lists.join(", ")
-        
+
         [@id, @name, @description,listas]
     end
+
 end

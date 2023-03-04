@@ -1,19 +1,20 @@
 require_relative "boards"
 require_relative "list"
 require_relative "cards"
-require "terminal-table"
+require_relative "store"
+
 
 class ClinBoards
   def initialize(filename)
     @filename = filename
-    @boards = load
+    @store = Store.new(filename)
   end
 
   def start
     
     loop do
       puts welcome()
-      puts boards_table
+      puts @store.boards_table
       puts boards_menu()
       puts "exit"
       print "> "
@@ -23,14 +24,14 @@ class ClinBoards
       case option
       when "create"
         data = boards_form
-        @boards.create_board(data)
+        @store.create_board(data)
       when "show"
         show_boards(id.to_i)
       when "update"
-        data = board_form
-        @boards.update_board(id.to_i, data)
+        data = boards_form
+        @store.update_board(id.to_i, data)
       when "delete"
-        @boards.delete_board(id.to_i)
+        @store.delete_board(id.to_i)
       when "exit"
         puts "Goodbye!"
         break
@@ -40,18 +41,6 @@ class ClinBoards
 
   private
 
-  def boards_table
-    table = Terminal::Table.new
-    table.title = "CLIn Boards"
-    table.headings = ["ID", "Name", "Description", "List(#cards)"]
-    table.rows = @boards.map(&:boards_table_row)
-    table
-  end
-
-  def load
-    board_data = JSON.parse(File.read(@filename), symbolize_names: true )
-    board_data.map { |list| Board.new(**list)}
-  end
 
   def welcome
     puts "####################################"
@@ -74,7 +63,9 @@ class ClinBoards
 
   def show_boards(board_id)
     loop do
+      puts @store.list_table(board_id)
       dislplay_lists_menus()
+      print "> "
 
       option , id = gets.chomp.split
 

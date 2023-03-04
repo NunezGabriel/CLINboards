@@ -2,14 +2,14 @@ require_relative "cards"
 require "json"
 
 class List
-  attr_reader :list
+  attr_reader :list, :name, :cards
 
   @@id = nil
 
-  def initialize(id:, name:, card: nil)
+  def initialize(id:, name:, cards: nil)
     @id = id
     @name = name
-    @cards = card || []
+    @cards = cards || []
   end
 
 
@@ -66,7 +66,9 @@ class List
     cards[:cards].delete_if { |card| card.id == id }
   end
 
+
   private
+  
 
   def load
     @cards.map { |card| Cards.new(**card)}

@@ -40,4 +40,18 @@ class Cards
   def delete_checklist(index)
     @checklist.delete_at(index - 1)
   end
+
+  def cards_table_row
+    lists = []
+
+    @checklist.each do |checklist|
+      if checklist[:completed]
+        lists < checklist
+      end
+    end
+
+    lists
+
+    [@id, @title, @members,@labels, @due_date,"#{list.size}/#{@checklist.size}"]
+end
 end
