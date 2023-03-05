@@ -3,7 +3,6 @@ require_relative "list"
 require_relative "boards"
 
 class Store
-
   def initialize(filename)
     @filename = filename
     @boards = load
@@ -18,7 +17,7 @@ class Store
     save
   end
 
-  def create_list(id,data)
+  def create_list(id, data)
     board = find_board(id)
     board.create_lists(data)
     save
@@ -35,57 +34,57 @@ class Store
     save
   end
 
-  def update_list(id,name,data)
+  def update_list(id, name, data)
     board = find_board(id)
-    board.update_lists(name,data)
+    board.update_lists(name, data)
     save
   end
 
-  def delete_list(id,name)
+  def delete_list(id, name)
     board = find_board(id)
     board.delete_lists(name)
     save
   end
 
-  def create_card(id, name_list,data)
+  def create_card(id, name_list, data)
     board = find_board(id)
-    board.create_cards(name_list,data)
+    board.create_cards(name_list, data)
     save
   end
 
-  def update_card(board_id,id,name_list,data)
+  def update_card(board_id, id, name_list, data)
     board = find_board(board_id)
-    board.update_cards(id.to_i,name_list,data)
+    board.update_cards(id.to_i, name_list, data)
     save
   end
 
-  def delete_card(board_id,id)
+  def delete_card(board_id, id)
     board = find_board(board_id)
     board.delete_cards(id)
     save
   end
 
-  def checklist_card(board_id,card_id)
+  def checklist_card(board_id, card_id)
     board = find_board(board_id)
     board.checklist_card(card_id)
     save
   end
 
-  def add_checklist(board_id,card_id,title)
+  def add_checklist(board_id, card_id, title)
     board = find_board(board_id)
-    board.add_checklists(card_id,title)
+    board.add_checklists(card_id, title)
     save
   end
 
-  def toggle_checklist(board_id,card_id,index)
+  def toggle_checklist(board_id, card_id, index)
     board = find_board(board_id)
-    board.toggle_checklists(card_id,index)
+    board.toggle_checklists(card_id, index)
     save
   end
 
-  def delete_checklist(board_id,card_id,index)
+  def delete_checklist(board_id, card_id, index)
     board = find_board(board_id)
-    board.delete_checklists(card_id,index)
+    board.delete_checklists(card_id, index)
     save
   end
 
@@ -107,13 +106,12 @@ class Store
       puts table
     end
   end
-        
+
   def load
-    board_data = JSON.parse(File.read(@filename), symbolize_names: true )
-    board_data.map { |list| Board.new(**list)}
+    board_data = JSON.parse(File.read(@filename), symbolize_names: true)
+    board_data.map { |list| Board.new(**list) }
   end
 
-          
   def save
     File.write(@filename, JSON.pretty_generate(@boards))
   end

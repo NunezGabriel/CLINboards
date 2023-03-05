@@ -1,9 +1,10 @@
 class Cards
   attr_reader :id
   attr_accessor :title, :members, :labels, :due_date
+
   @@id_count = 0
 
-  def initialize(title:, members:, labels: nil, due_date:, id: nil, checklist: [])
+  def initialize(title:, members:, due_date:, labels: nil, id: nil, checklist: [])
     @id =  next_id(id)
     @title = title
     @members = members
@@ -47,26 +48,25 @@ class Cards
     lists = []
 
     @checklist.each do |checklist|
-      if checklist[:completed]
-        lists << checklist
-      end
+      lists << checklist if checklist[:completed]
     end
 
     lists
 
-    [@id, @title, @members.join(", "),@labels.join(", "), @due_date,"#{lists.size}/#{@checklist.size}"]
+    [@id, @title, @members.join(", "), @labels.join(", "), @due_date, "#{lists.size}/#{@checklist.size}"]
   end
-  def to_json(arg)
+
+  def to_json(_arg)
     JSON.pretty_generate({
-      id: @id,
-      title: @title, 
-      members: @members, 
-      labels:@labels, 
-      due_date: @due_date, 
-      checklist: @checklist 
-    })
+                           id: @id,
+                           title: @title,
+                           members: @members,
+                           labels: @labels,
+                           due_date: @due_date,
+                           checklist: @checklist
+                         })
   end
-  
+
   def next_id(id)
     if id
       @@id_count = [@@id_count, id].max
